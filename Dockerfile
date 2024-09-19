@@ -7,6 +7,6 @@ RUN dotnet restore
 
 COPY . ./
 
-RUN dotnet publish -c Release -o out --no-restore
+RUN dotnet build -c Release
 
-ENTRYPOINT dotnet out/CoinReleaseMonitor.dll
+ENTRYPOINT dotnet bin/Release/net6.0/CoinReleaseMonitor.dll
