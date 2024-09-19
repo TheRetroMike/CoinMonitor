@@ -11,5 +11,6 @@ RUN dotnet build -c Release
 
 ENV WEBHOOK=xxx
 
-ENTRYPOINT dotnet /app/bin/Release/net6.0/CoinReleaseMonitor.dll $WEBHOOK
+#ENTRYPOINT dotnet /app/bin/Release/net6.0/CoinReleaseMonitor.dll {$WEBHOOK}
+CMD ["sh", "-c", "dotnet /app/bin/Release/net6.0/CoinReleaseMonitor.dll {$WEBHOOK}"]
 #ENTRYPOINT ls /app/
