@@ -10,7 +10,7 @@ else
     Console.WriteLine("Using Discord Webhook Url: " + args[0]);
     var startTimeSpan = TimeSpan.Zero;
     var periodTimeSpan = TimeSpan.FromMinutes(15);
-
+    Processor.Process(args[0]);
     var timer = new System.Threading.Timer((e) =>
     {
         Processor.Process(args[0]);
