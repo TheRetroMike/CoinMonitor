@@ -54,7 +54,7 @@ namespace CoinReleaseMonitor
                                 var coinAlgo = grouping;
                                 allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo });
 
-                                if (sourceCoins.Where(x => x.Name == coinName).FirstOrDefault() == null)
+                                if (sourceCoins.Where(x => x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase)).Count() == 0)
                                 {
                                     newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
                                 }
@@ -97,7 +97,7 @@ namespace CoinReleaseMonitor
                     var coinAlgo = Convert.ToString(item.Value["algo"]);
                     allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo });
 
-                    if (sourceCoins.Where(x => x.Name == coinName).FirstOrDefault() == null)
+                    if (sourceCoins.Where(x => x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase)).Count() == 0)
                     {
                         newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
                     }
