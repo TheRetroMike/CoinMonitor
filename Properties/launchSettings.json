@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CoinReleaseMonitor": {
+      "commandName": "Project",
+      "commandLineArgs": "https://discord.com/api/webhooks/1284627044809969694/wnOsr9WCtPforSxWo3JHqCju6EFh7049COwJ7VryGYUQhwVi-NwpGIav1KfXs3dKfg_e"
+    }
+  }
+}
