@@ -9,4 +9,4 @@ COPY . ./
 
 RUN dotnet publish -c Release -o out --no-restore
 
-ENTRYPOINT dotnet CoinReleaseMonitor.dll
+ENTRYPOINT dotnet out/CoinReleaseMonitor.dll
