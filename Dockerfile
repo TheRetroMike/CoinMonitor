@@ -9,4 +9,6 @@ COPY . ./
 
 RUN dotnet build -c Release
 
-ENTRYPOINT dotnet bin/Release/net6.0/CoinReleaseMonitor.dll
+ENV WEBHOOK=xxx
+
+ENTRYPOINT dotnet bin/Release/net6.0/CoinReleaseMonitor.dll ${WEBHOOK}
