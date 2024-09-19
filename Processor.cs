@@ -28,7 +28,7 @@ namespace CoinReleaseMonitor
             string url = "https://miningpoolstats.stream/data/coin_list.1726257384.min.js";
 
             Console.WriteLine(String.Format("[{0}] Running {1}...", DateTime.Now, source));
-            var datFileName = String.Format("{0}.dat", source.ToLower());
+            var datFileName = String.Format("data/{0}.dat", source.ToLower());
             List<CoinData> sourceCoins = GetExistingCoins(datFileName);
             List<CoinData> newCoins = new List<CoinData>();
             List<CoinData> allCoins = new List<CoinData>();
@@ -80,7 +80,7 @@ namespace CoinReleaseMonitor
         static void YiimpStyle(string url, string source)
         {
             Console.WriteLine(String.Format("[{0}] Running {1}...", DateTime.Now, source));
-            var datFileName = String.Format("{0}.dat", source.ToLower());
+            var datFileName = String.Format("data/{0}.dat", source.ToLower());
             List<CoinData> sourceCoins = GetExistingCoins(datFileName);
             List<CoinData> newCoins = new List<CoinData>();
             List<CoinData> allCoins = new List<CoinData>();
@@ -119,7 +119,7 @@ namespace CoinReleaseMonitor
         static void RPlant()
         {
             Console.WriteLine(String.Format("[{0}] Running RPlant...", DateTime.Now));
-            List<CoinData> rplantCoins = GetExistingCoins("rplant.dat");
+            List<CoinData> rplantCoins = GetExistingCoins("data/rplant.dat");
             List<CoinData> newCoins = new List<CoinData>();
             List<CoinData> allCoins = new List<CoinData>();
             string requestUrl = "https://pool.rplant.xyz/api/currencies";
@@ -149,7 +149,7 @@ namespace CoinReleaseMonitor
                 Console.WriteLine(item.Name);
             }
 
-            using (var writer = new StreamWriter("rplant.dat"))
+            using (var writer = new StreamWriter("data/rplant.dat"))
             {
                 writer.Write(JsonConvert.SerializeObject(allCoins));
             }
