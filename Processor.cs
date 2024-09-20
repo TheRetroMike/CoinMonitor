@@ -16,10 +16,66 @@ namespace CoinReleaseMonitor
         public static void Process(string _discordWebhook)
         {
             discordWebhookUrl = _discordWebhook;
+
+            if (!Directory.Exists("data"))
+            {
+                Directory.CreateDirectory("data");
+            }
+            Mining4People();
             MiningPoolStats();
             RPlant();
             YiimpStyle("https://www.zpool.ca/api/currencies", "ZergPool");
             YiimpStyle("https://www.zpool.ca/api/currencies", "ZPool");
+        }
+
+        static void Mining4People()
+        {
+            string source = "Mining4People";
+            string url = "https://mining4people.com/api/pools";
+            Console.WriteLine(String.Format("[{0}] Running {1}...", DateTime.Now, source));
+            var datFileName = String.Format("data/{0}.dat", source.ToLower());
+            List<CoinData> sourceCoins = GetExistingCoins(datFileName);
+            List<CoinData> newCoins = new List<CoinData>();
+            var client = new RestClient(url);
+            var request = new RestRequest("");
+            var response = client.Get(request);
+            dynamic responseData = JsonConvert.DeserializeObject(response.Content ?? "");
+            if (responseData != null)
+            {
+                foreach (var item in responseData)
+                {
+
+                    var coinTicker = Convert.ToString(item["coin"]);
+                    var coinName = Convert.ToString(item["name"]);
+                    var coinAlgo = Convert.ToString(item["algorithm"]);
+
+                    if (sourceCoins.Where(x =>
+                        x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Algo.Equals(coinAlgo, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Ticker.Equals(coinTicker, StringComparison.CurrentCultureIgnoreCase)
+                        ).Count() == 0 &&
+                        newCoins.Where(x =>
+                        x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Algo.Equals(coinAlgo, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Ticker.Equals(coinTicker, StringComparison.CurrentCultureIgnoreCase)
+                        ).Count()==0)
+                    {
+                        newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
+                        sourceCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
+                    }
+                }
+            }
+
+            foreach (var item in newCoins)
+            {
+                DiscordNotify(item.Name, item.Algo, item.Ticker, source);
+                Console.WriteLine(item.Name);
+            }
+
+            using (var writer = new StreamWriter(datFileName))
+            {
+                writer.Write(JsonConvert.SerializeObject(sourceCoins));
+            }
         }
 
         static void MiningPoolStats()
@@ -28,7 +84,7 @@ namespace CoinReleaseMonitor
             string url = "https://miningpoolstats.stream/data/coin_list.1726257384.min.js";
 
             Console.WriteLine(String.Format("[{0}] Running {1}...", DateTime.Now, source));
-            var datFileName = String.Format("{0}.dat", source.ToLower());
+            var datFileName = String.Format("data/{0}.dat", source.ToLower());
             List<CoinData> sourceCoins = GetExistingCoins(datFileName);
             List<CoinData> newCoins = new List<CoinData>();
             List<CoinData> allCoins = new List<CoinData>();
@@ -54,7 +110,7 @@ namespace CoinReleaseMonitor
                                 var coinAlgo = grouping;
                                 allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo });
 
-                                if (sourceCoins.Where(x => x.Name == coinName).FirstOrDefault() == null)
+                                if (sourceCoins.Where(x => x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase)).Count() == 0)
                                 {
                                     newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
                                 }
@@ -80,10 +136,10 @@ namespace CoinReleaseMonitor
         static void YiimpStyle(string url, string source)
         {
             Console.WriteLine(String.Format("[{0}] Running {1}...", DateTime.Now, source));
-            var datFileName = String.Format("{0}.dat", source.ToLower());
+            var datFileName = String.Format("data/{0}.dat", source.ToLower());
             List<CoinData> sourceCoins = GetExistingCoins(datFileName);
             List<CoinData> newCoins = new List<CoinData>();
-            List<CoinData> allCoins = new List<CoinData>();
+            //List<CoinData> allCoins = new List<CoinData>();
             var client = new RestClient(url);
             var request = new RestRequest("");
             var response = client.Get(request);
@@ -95,11 +151,16 @@ namespace CoinReleaseMonitor
                     var coinTicker = Convert.ToString(item.Name);
                     var coinName = Convert.ToString(item.Value["name"]);
                     var coinAlgo = Convert.ToString(item.Value["algo"]);
-                    allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo });
+                    //allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
 
-                    if (sourceCoins.Where(x => x.Name == coinName).FirstOrDefault() == null)
+                    if (sourceCoins.Where(x => 
+                        x.Name.Equals(coinName, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Algo.Equals(coinAlgo, StringComparison.CurrentCultureIgnoreCase) &&
+                        x.Ticker.Equals(coinTicker, StringComparison.CurrentCultureIgnoreCase)
+                        ).Count() == 0)
                     {
                         newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
+                        sourceCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
                     }
                 }
             }
@@ -112,14 +173,14 @@ namespace CoinReleaseMonitor
 
             using (var writer = new StreamWriter(datFileName))
             {
-                writer.Write(JsonConvert.SerializeObject(allCoins));
+                writer.Write(JsonConvert.SerializeObject(sourceCoins));
             }
         }
 
         static void RPlant()
         {
             Console.WriteLine(String.Format("[{0}] Running RPlant...", DateTime.Now));
-            List<CoinData> rplantCoins = GetExistingCoins("rplant.dat");
+            List<CoinData> rplantCoins = GetExistingCoins("data/rplant.dat");
             List<CoinData> newCoins = new List<CoinData>();
             List<CoinData> allCoins = new List<CoinData>();
             string requestUrl = "https://pool.rplant.xyz/api/currencies";
@@ -134,11 +195,11 @@ namespace CoinReleaseMonitor
                     var coinTicker = Convert.ToString(item.Name);
                     var coinName = Convert.ToString(item.Value["name"]);
                     var coinAlgo = Convert.ToString(item.Value["algo"]);
-                    allCoins.Add(new CoinData() { Name=coinName, Algo=coinAlgo });
+                    allCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo });
 
-                    if (rplantCoins.Where(x => x.Name==coinName).FirstOrDefault() == null)
+                    if (rplantCoins.Where(x => x.Name == coinName).FirstOrDefault() == null)
                     {
-                        newCoins.Add(new CoinData() {  Name=coinName, Algo=coinAlgo, Ticker=coinTicker });
+                        newCoins.Add(new CoinData() { Name = coinName, Algo = coinAlgo, Ticker = coinTicker });
                     }
                 }
             }
@@ -149,7 +210,7 @@ namespace CoinReleaseMonitor
                 Console.WriteLine(item.Name);
             }
 
-            using (var writer = new StreamWriter("rplant.dat"))
+            using (var writer = new StreamWriter("data/rplant.dat"))
             {
                 writer.Write(JsonConvert.SerializeObject(allCoins));
             }
@@ -181,7 +242,7 @@ namespace CoinReleaseMonitor
                     await client.SendMessageAsync(text: "", embeds: new[] { embed.Build() });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Error trying to notify discord: " + ex.Message);
             }

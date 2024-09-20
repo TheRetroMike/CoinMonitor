@@ -1,0 +1,14 @@
+C:\Users\admin\source\repos\CryptoCoinMonitor\CoinReleaseMonitor.exe
+C:\Users\admin\source\repos\CryptoCoinMonitor\CoinReleaseMonitor.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\CoinReleaseMonitor.deps.json
+C:\Users\admin\source\repos\CryptoCoinMonitor\CoinReleaseMonitor.runtimeconfig.json
+C:\Users\admin\source\repos\CryptoCoinMonitor\CoinReleaseMonitor.pdb
+C:\Users\admin\source\repos\CryptoCoinMonitor\Discord.Net.Core.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\Discord.Net.Rest.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\Discord.Net.Webhook.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\HtmlAgilityPack.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\Newtonsoft.Json.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\RestSharp.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\System.Interactive.Async.dll
+C:\Users\admin\source\repos\CryptoCoinMonitor\System.Linq.Async.dll

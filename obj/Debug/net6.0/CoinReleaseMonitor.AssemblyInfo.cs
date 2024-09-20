@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoinReleaseMonitor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d61dad99043a236489907f03b832ab7856f59098")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7d44ce24b33a62d7724143f889d6dcc28b80fd0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoinReleaseMonitor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoinReleaseMonitor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
