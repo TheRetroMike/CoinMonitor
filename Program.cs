@@ -9,7 +9,7 @@ else
     while (true)
     {
         Processor.Process(args[0]);
-        Thread.Sleep(TimeSpan.FromSeconds(15));
+        Thread.Sleep(TimeSpan.FromMinutes(15));
     }
 }
 Console.ReadLine();
