@@ -21,7 +21,7 @@ namespace CoinReleaseMonitor
             {
                 Directory.CreateDirectory("data");
             }
-            Mining4People();
+            //Mining4People();
             MiningPoolStats();
             RPlant();
             YiimpStyle("https://www.zpool.ca/api/currencies", "ZergPool");
