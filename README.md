@@ -4,3 +4,4 @@
 - ZergPool
 - ZPool
 - RPlant
+- MiningPoolStats
